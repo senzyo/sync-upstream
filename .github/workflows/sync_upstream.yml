@@ -1,0 +1,71 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  git-config:
+    name: Git config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+  github-readme-stats:
+    needs: git-config
+    name: Sync github-readme-stats
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync github-readme-stats
+        run: |
+          git clone https://${{ secrets.PERSONAL_TOKEN }}@github.com/senzyo/github-readme-stats.git
+          cd github-readme-stats
+          git remote add upstream https://github.com/anuraghazra/github-readme-stats.git
+          git pull upstream master
+          git push origin master
+
+  mind-map:
+    needs: git-config
+    name: Sync mind-map
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync mind-map
+        run: |
+          git clone https://${{ secrets.PERSONAL_TOKEN }}@github.com/senzyo/mind-map.git
+          cd mind-map
+          git remote add upstream https://github.com/wanglin2/mind-map.git
+          git pull upstream main
+          git push origin master
+
+  rename:
+    needs: git-config
+    name: Sync rename
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync rename
+        run: |
+          git clone https://${{ secrets.PERSONAL_TOKEN }}@github.com/senzyo/rename.git
+          cd rename
+          git remote add upstream https://github.com/JasonGrass/rename.git
+          git pull upstream main
+          git push origin master
+
+  sing-box-subscribe:
+    needs: git-config
+    name: Sync sing-box-subscribe
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync sing-box-subscribe
+        run: |
+          git clone https://${{ secrets.PERSONAL_TOKEN }}@github.com/senzyo/sing-box-subscribe.git
+          cd sing-box-subscribe
+          git remote add upstream https://github.com/Toperlock/sing-box-subscribe.git
+          git pull upstream main
+          git push origin master
